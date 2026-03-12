@@ -14,11 +14,21 @@ observer.observe(el)
 
 // MENU MOBILE
 
-const menuBtn=document.getElementById("menu-btn")
-const menu=document.getElementById("menu")
+const menuBtn = document.getElementById("menu-btn")
+const menu = document.getElementById("menu")
 
-menuBtn.addEventListener("click",()=>{
-menu.classList.toggle("show")
+menuBtn.addEventListener("click", () => {
+    menu.classList.toggle("show")
+})
+
+// fechar menu ao clicar fora
+
+document.addEventListener("click", (e) => {
+
+    if(!menu.contains(e.target) && !menuBtn.contains(e.target)){
+        menu.classList.remove("show")
+    }
+
 })
 
 
