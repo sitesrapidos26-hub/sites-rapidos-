@@ -8,59 +8,60 @@ let autoplay
 let restartTimer
 
 let slideWidth
+let visibleSlides
+let maxIndex
 
-window.addEventListener("load",()=>{
-slideWidth = slides[0].offsetWidth + 20
-startAuto()
+window.addEventListener("load", () => {
+
+    slideWidth = slides[0].offsetWidth + 20
+
+    visibleSlides = window.innerWidth < 768 ? 1 : 3
+    maxIndex = slides.length - visibleSlides
+
+    startAuto()
 })
 
-const visibleSlides = window.innerWidth < 768 ? 1 : 3
-const maxIndex = slides.length - visibleSlides
-
 function updateCarousel(){
-track.style.transform = `translateX(-${index * slideWidth}px)`
+    track.style.transform = `translateX(-${index * slideWidth}px)`
 }
 
 function nextSlide(){
-index++
-if(index > maxIndex){
-index = 0
-}
-updateCarousel()
+    index++
+    if(index > maxIndex){
+        index = 0
+    }
+    updateCarousel()
 }
 
 function prevSlide(){
-index--
-if(index < 0){
-index = maxIndex
-}
-updateCarousel()
+    index--
+    if(index < 0){
+        index = maxIndex
+    }
+    updateCarousel()
 }
 
 function startAuto(){
-autoplay = setInterval(nextSlide, 3000)
+    clearInterval(autoplay)
+    autoplay = setInterval(nextSlide, 3000)
 }
 
 function pauseAuto(){
-clearInterval(autoplay)
+    clearInterval(autoplay)
 
-clearTimeout(restartTimer)
+    clearTimeout(restartTimer)
 
-restartTimer = setTimeout(()=>{
-startAuto()
-},5000)
+    restartTimer = setTimeout(()=>{
+        startAuto()
+    },5000)
 }
 
 next.addEventListener("click", ()=>{
-nextSlide()
-pauseAuto()
+    nextSlide()
+    pauseAuto()
 })
 
 prev.addEventListener("click", ()=>{
-prevSlide()
-pauseAuto()
-})
-
-window.addEventListener("load",()=>{
-startAuto()
+    prevSlide()
+    pauseAuto()
 })
