@@ -2,6 +2,7 @@ const track = document.querySelector(".carousel-track")
 const slides = document.querySelectorAll(".carousel-track img")
 const next = document.querySelector(".next")
 const prev = document.querySelector(".prev")
+const carousel = document.querySelector(".carousel")
 
 let index = 0
 let autoplay
@@ -27,26 +28,36 @@ function updateCarousel(){
 
 function nextSlide(){
     index++
+
     if(index > maxIndex){
         index = 0
     }
+
     updateCarousel()
 }
 
 function prevSlide(){
     index--
+
     if(index < 0){
         index = maxIndex
     }
+
     updateCarousel()
 }
 
 function startAuto(){
+
     clearInterval(autoplay)
-    autoplay = setInterval(nextSlide, 3000)
+
+    autoplay = setInterval(()=>{
+        nextSlide()
+    },3000)
+
 }
 
 function pauseAuto(){
+
     clearInterval(autoplay)
 
     clearTimeout(restartTimer)
@@ -54,6 +65,7 @@ function pauseAuto(){
     restartTimer = setTimeout(()=>{
         startAuto()
     },5000)
+
 }
 
 next.addEventListener("click", ()=>{
@@ -66,9 +78,25 @@ prev.addEventListener("click", ()=>{
     pauseAuto()
 })
 
-window.addEventListener("resize", () => {
+/* PAUSAR AO PASSAR O MOUSE */
+
+carousel.addEventListener("mouseenter", ()=>{
+    clearInterval(autoplay)
+})
+
+carousel.addEventListener("mouseleave", ()=>{
+    startAuto()
+})
+
+/* RESPONSIVIDADE */
+
+window.addEventListener("resize", ()=>{
+
     slideWidth = slides[0].offsetWidth + 20
+
     visibleSlides = window.innerWidth < 768 ? 1 : 3
     maxIndex = slides.length - visibleSlides
+
     updateCarousel()
+
 })
